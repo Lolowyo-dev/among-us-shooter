@@ -7,16 +7,17 @@ extends Area2D
 @export var target_group: String = Constants.GROUP_ENEMIES
 
 var direction: Vector2 = Vector2.RIGHT
-var start_position: Vector2
+var traveled_distance: float = 0.0
 
 func _ready() -> void:
-	start_position = global_position
-
-func _process(delta: float) -> void:
-	global_position += direction * speed * delta
 	rotation = direction.angle()
+
+func _physics_process(delta: float) -> void:
+	var move_step: float = speed * delta
+	global_position += direction * move_step
 	
-	if global_position.distance_to(start_position) > max_distance:
+	traveled_distance += move_step
+	if traveled_distance >= max_distance:
 		queue_free()
 
 func _on_body_entered(body: Node2D) -> void:

@@ -4,13 +4,16 @@ extends Node2D
 @export var ammo_scene: PackedScene
 
 @onready var ground: TileMapLayer = $Ground
+@onready var player: Player = $Player
+@onready var hud: HUD = $HUD
 
 func _ready() -> void:
 	GameState.calculate_bounds(ground)
 	GameState.reset_game()
 	
-	var player = get_tree().get_first_node_in_group(Constants.GROUP_PLAYER)
-	if player and player is Player:
+	if player != null:
+		if hud != null:
+			hud.setup(player)
 		player.died.connect(_on_player_died)
 
 func _on_player_died() -> void:

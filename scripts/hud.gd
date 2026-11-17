@@ -8,13 +8,14 @@ extends CanvasLayer
 func _ready() -> void:
 	GameState.score_changed.connect(update_score)
 	update_score(GameState.score)
-	
-	var player = get_tree().get_first_node_in_group(Constants.GROUP_PLAYER)
-	if player and player is Player:
-		player.health_changed.connect(update_health)
-		player.ammo_changed.connect(update_ammo)
-		update_health(player.health, player.max_health)
-		update_ammo(player.ammo, player.max_ammo)
+
+func setup(player: Player) -> void:
+	if player == null:
+		return
+	player.health_changed.connect(update_health)
+	player.ammo_changed.connect(update_ammo)
+	update_health(player.health, player.max_health)
+	update_ammo(player.ammo, player.max_ammo)
 
 func update_score(val: int) -> void:
 	score_label.text = "Wynik: %d" % val

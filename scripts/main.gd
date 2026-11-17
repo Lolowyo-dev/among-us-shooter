@@ -7,6 +7,15 @@ extends Node2D
 
 func _ready() -> void:
 	GameState.calculate_bounds(ground)
+	GameState.reset_game()
+	
+	var player = get_tree().get_first_node_in_group(Constants.GROUP_PLAYER)
+	if player and player is Player:
+		player.died.connect(_on_player_died)
+
+func _on_player_died() -> void:
+	await get_tree().create_timer(0.8).timeout
+	GameState.restart_game()
 
 func spawn_pickup(scene: PackedScene) -> void:
 	if scene == null:

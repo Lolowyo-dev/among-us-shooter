@@ -13,6 +13,10 @@ func add_score(points: int = 1) -> void:
 func reset_game() -> void:
 	score = 0
 
+func restart_game() -> void:
+	reset_game()
+	get_tree().reload_current_scene()
+
 var map_bounds: Rect2
 
 func calculate_bounds(ground: TileMapLayer) -> void:

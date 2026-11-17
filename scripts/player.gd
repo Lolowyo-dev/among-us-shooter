@@ -3,6 +3,7 @@ extends Character
 
 signal health_changed(current_hp: int, max_hp: int)
 signal ammo_changed(current_ammo: int, max_ammo: int)
+signal died()
 
 @export var max_ammo: int = 20
 var ammo: int = max_ammo
@@ -75,5 +76,4 @@ func die() -> void:
 		return
 	super.die()
 	
-	await get_tree().create_timer(0.6).timeout
-	get_tree().reload_current_scene()
+	died.emit()

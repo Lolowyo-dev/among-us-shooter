@@ -9,8 +9,8 @@ func _ready() -> void:
 	GameState.score_changed.connect(update_score)
 	update_score(GameState.score)
 	
-	var player = get_tree().get_first_node_in_group("player")
-	if player:
+	var player = get_tree().get_first_node_in_group(Constants.GROUP_PLAYER)
+	if player and player is Player:
 		player.health_changed.connect(update_health)
 		player.ammo_changed.connect(update_ammo)
 		update_health(player.health, player.max_health)

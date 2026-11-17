@@ -20,6 +20,9 @@ const BASE_SPEED: float = 175.0
 @onready var glow: Sprite2D = get_node_or_null("Glow")
 var glow_tween: Tween
 var shoot_timer: Timer
+enum ShootPhase { IDLE, CLOSING_EYE, OPENING_EYE }
+var shoot_phase: ShootPhase = ShootPhase.IDLE
+var current_shoot_anim: String = ""
 
 var health: int = 100
 var direction: Vector2 = Vector2.RIGHT
@@ -40,20 +43,22 @@ func _ready() -> void:
 	if sprite_upper:
 		sprite_upper.animation_finished.connect(_on_sprite_upper_animation_finished)
 
-func update_animations(dir: Vector2) -> void:
-	if dir != Vector2.ZERO and not is_shooting:
-		if abs(dir.y) > abs(dir.x):
-			current_dir_name = "up" if dir.y < 0 else "down"
+func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) -> void:
+	var is_aiming: bool = (aiming_dir != Vector2.ZERO)
+	var active_dir: Vector2 = aiming_dir if is_aiming else move_dir
+	
+	if active_dir != Vector2.ZERO and not is_shooting:
+		if abs(active_dir.y) > abs(active_dir.x):
+			current_dir_name = "up" if active_dir.y < 0 else "down"
 			sprite_bottom.flip_h = false
 			sprite_upper.flip_h = false
 		else:
 			current_dir_name = "side"
-			var is_left: bool = dir.x < 0
+			var is_left: bool = active_dir.x < 0
 			sprite_bottom.flip_h = is_left
 			sprite_upper.flip_h = is_left
 	
-
-	if dir != Vector2.ZERO:
+	if active_dir != Vector2.ZERO:
 		var anim_name: String = "walking_" + current_dir_name
 		var frames: int = sprite_bottom.sprite_frames.get_frame_count(anim_name)
 		var fps: float = sprite_bottom.sprite_frames.get_animation_speed(anim_name)
@@ -65,12 +70,11 @@ func update_animations(dir: Vector2) -> void:
 		sprite_bottom.speed_scale = 1.0
 		sprite_bottom.play("idle_" + current_dir_name)
 	
-
-	if not is_shooting:
+	if shoot_phase == ShootPhase.IDLE:
 		sprite_upper.play("idle_" + current_dir_name)
 
 func can_shoot() -> bool:
-	return not is_dying and bullet_scene != null and shoot_timer.is_stopped()
+	return not is_dying and bullet_scene != null and shoot_timer.is_stopped() and shoot_phase == ShootPhase.IDLE
 
 func shoot(shoot_dir: Vector2) -> void:
 	if not can_shoot():
@@ -80,23 +84,43 @@ func shoot(shoot_dir: Vector2) -> void:
 	is_shooting = true
 	
 	# kierunek strzalu
-	var shoot_anim: String = "shoot_side"
+	current_shoot_anim = "shoot_side"
 	if shoot_dir != Vector2.ZERO:
 		look_direction = shoot_dir
 		if abs(shoot_dir.y) > abs(shoot_dir.x):
-			shoot_anim = "shoot_up" if shoot_dir.y < 0 else "shoot_down"
+			current_shoot_anim = "shoot_up" if shoot_dir.y < 0 else "shoot_down"
 			current_dir_name = "up" if shoot_dir.y < 0 else "down"
 			sprite_upper.flip_h = false
 			sprite_bottom.flip_h = false
 			fire_point.position = Vector2(0, -11) if shoot_dir.y < 0 else Vector2(0, 11)
 		else:
-			shoot_anim = "shoot_side"
+			current_shoot_anim = "shoot_side"
 			current_dir_name = "side"
 			var is_left: bool = shoot_dir.x < 0
 			sprite_upper.flip_h = is_left
 			sprite_bottom.flip_h = is_left
 			fire_point.position = Vector2(11 * sign(shoot_dir.x), -4) 
 	
+	var frames: int = sprite_upper.sprite_frames.get_frame_count(current_shoot_anim)
+	
+	if frames <= 1:
+		spawn_bullet()
+		sprite_upper.play(current_shoot_anim)
+		shoot_phase = ShootPhase.IDLE
+		is_shooting = false
+		return
+	
+	var half_time: float = shoot_cooldown * 0.45
+	var fps: float = sprite_upper.sprite_frames.get_animation_speed(current_shoot_anim)
+	sprite_upper.speed_scale = (frames / fps) / half_time
+	
+	shoot_phase = ShootPhase.CLOSING_EYE
+	sprite_upper.play(current_shoot_anim)
+
+func spawn_bullet() -> void:
+	if bullet_scene == null or is_dying:
+		return
+		
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = fire_point.global_position
 	bullet.direction = look_direction
@@ -105,16 +129,22 @@ func shoot(shoot_dir: Vector2) -> void:
 	
 	if shoot_sound:
 		shoot_sound.play()
-	
-	sprite_upper.play(shoot_anim)
 
 func _on_sprite_upper_animation_finished() -> void:
 	if is_dying:
 		return
 	
-	if sprite_upper.animation.begins_with("shoot_"):
-		is_shooting = false
-		sprite_upper.play("idle_" + current_dir_name)
+	match shoot_phase:
+		ShootPhase.CLOSING_EYE:
+			spawn_bullet()
+			shoot_phase = ShootPhase.OPENING_EYE
+			sprite_upper.play_backwards(current_shoot_anim)
+		
+		ShootPhase.OPENING_EYE:
+			shoot_phase = ShootPhase.IDLE
+			is_shooting = false
+			sprite_upper.speed_scale = 1.0
+			sprite_upper.play("idle_" + current_dir_name)
 
 func show_glow(color: Color) -> void:
 	if glow == null:
@@ -143,6 +173,7 @@ func die() -> void:
 	if is_dying:
 		return
 	is_dying = true
+	shoot_phase = ShootPhase.IDLE
 	is_shooting = false
 	
 	if glow_tween and glow_tween.is_valid():

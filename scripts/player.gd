@@ -26,9 +26,10 @@ func set_camera_limits() -> void:
 
 func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var shoot_dir = Input.get_vector("shoot_left", "shoot_right", "shoot_up", "shoot_down")
 	velocity = input_dir * speed
 	
-	update_animations(input_dir)
+	update_animations(input_dir, shoot_dir)
 	move_and_slide()
 	
 	for i in get_slide_collision_count():
@@ -43,8 +44,7 @@ func _physics_process(delta: float) -> void:
 		half_size = hit_box.shape.size / 2.0
 	global_position.x = clamp(global_position.x, GameState.map_bounds.position.x + half_size.x, GameState.map_bounds.end.x - half_size.x)
 	global_position.y = clamp(global_position.y, GameState.map_bounds.position.y + half_size.y, GameState.map_bounds.end.y - half_size.y)
-	
-	var shoot_dir = Input.get_vector("shoot_left", "shoot_right", "shoot_up", "shoot_down")
+
 	if shoot_dir != Vector2.ZERO:
 		shoot(shoot_dir)
 

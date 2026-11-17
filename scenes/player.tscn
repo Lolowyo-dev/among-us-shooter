@@ -27,9 +27,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(22, 24)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qlg0r"]
-size = Vector2(22, 24)
-
 [sub_resource type="Gradient" id="Gradient_7lmhl"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
@@ -177,11 +174,6 @@ explosion_scene = ExtResource("3_tuyoq")
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=220504]
 shape = SubResource("RectangleShape2D_g2els")
-
-[node name="HurtBox" type="Area2D" parent="." unique_id=1554034683]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=126222271]
-shape = SubResource("RectangleShape2D_qlg0r")
 
 [node name="ShootSound" type="AudioStreamPlayer2D" parent="." unique_id=1781883320]
 stream = ExtResource("2_qhqgy")

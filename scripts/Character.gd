@@ -1,0 +1,152 @@
+class_name Character
+extends CharacterBody2D
+
+@export var speed: float = 175.0
+@export var max_health: int = 100
+@export var bullet_scene: PackedScene
+@export var bullet_scale: float = 1.0
+@export var explosion_scene: PackedScene
+@export var walk_cycle_time: float = 0.3
+@export var shoot_cooldown: float = 0.35
+
+const BASE_SPEED: float = 175.0
+
+@onready var sprite_upper: AnimatedSprite2D = $sprite_upper
+@onready var sprite_bottom: AnimatedSprite2D = $sprite_bottom
+@onready var fire_point: Marker2D = $sprite_upper/FirePoint
+
+@onready var shoot_sound: AudioStreamPlayer2D = get_node_or_null("ShootSound")
+@onready var hit_sound: AudioStreamPlayer2D = get_node_or_null("HitSound")
+@onready var glow: Sprite2D = get_node_or_null("Glow")
+var glow_tween: Tween
+
+var health: int = 100
+var direction: Vector2 = Vector2.RIGHT
+var look_direction: Vector2 = Vector2.RIGHT
+var current_dir_name: String = "side"
+var is_shooting: bool = false
+var is_dying: bool = false
+var start_position: Vector2
+
+func _ready() -> void:
+	start_position = global_position
+	health = max_health
+
+func update_animations(dir: Vector2) -> void:
+	if dir != Vector2.ZERO and not is_shooting:
+		if abs(dir.y) > abs(dir.x):
+			current_dir_name = "up" if dir.y < 0 else "down"
+			sprite_bottom.flip_h = false
+			sprite_upper.flip_h = false
+		else:
+			current_dir_name = "side"
+			var is_left: bool = dir.x < 0
+			sprite_bottom.flip_h = is_left
+			sprite_upper.flip_h = is_left
+	
+
+	if dir != Vector2.ZERO:
+		var anim_name: String = "walking_" + current_dir_name
+		var frames: int = sprite_bottom.sprite_frames.get_frame_count(anim_name)
+		var fps: float = sprite_bottom.sprite_frames.get_animation_speed(anim_name)
+		var default_duration: float = frames / fps
+		var speed_ratio: float = velocity.length() / BASE_SPEED
+		sprite_bottom.speed_scale = (default_duration / walk_cycle_time) * speed_ratio
+		sprite_bottom.play(anim_name)
+	else:
+		sprite_bottom.speed_scale = 1.0
+		sprite_bottom.play("idle_" + current_dir_name)
+	
+
+	if not is_shooting:
+		sprite_upper.play("idle_" + current_dir_name)
+
+func shoot(shoot_dir: Vector2) -> void:
+	if bullet_scene == null or is_shooting:
+		return
+	is_shooting = true
+	
+	var shoot_anim: String = "shoot_side"
+	if shoot_dir != Vector2.ZERO:
+		look_direction = shoot_dir
+		if abs(shoot_dir.y) > abs(shoot_dir.x):
+			shoot_anim = "shoot_up" if shoot_dir.y < 0 else "shoot_down"
+			current_dir_name = "up" if shoot_dir.y < 0 else "down"
+			sprite_upper.flip_h = false
+			sprite_bottom.flip_h = false
+			fire_point.position = Vector2(0, -11) if shoot_dir.y < 0 else Vector2(0, 11)
+		else:
+			shoot_anim = "shoot_side"
+			current_dir_name = "side"
+			var is_left: bool = shoot_dir.x < 0
+			sprite_upper.flip_h = is_left
+			sprite_bottom.flip_h = is_left
+			fire_point.position = Vector2(11 * sign(shoot_dir.x), -4)
+		if velocity != Vector2.ZERO:
+			sprite_bottom.play("walking_" + current_dir_name)
+		else:
+			sprite_bottom.play("idle_" + current_dir_name)
+	var half_time: float = shoot_cooldown / 2.0
+	var frames: int = sprite_upper.sprite_frames.get_frame_count(shoot_anim)
+	var fps: float = sprite_upper.sprite_frames.get_animation_speed(shoot_anim)
+	sprite_upper.speed_scale = (frames / fps) / half_time
+
+	sprite_upper.play(shoot_anim)
+	await get_tree().create_timer(half_time).timeout
+
+	var bullet = bullet_scene.instantiate()
+	bullet.global_position = fire_point.global_position
+	bullet.direction = look_direction
+	bullet.scale = self.scale * bullet_scale
+	get_tree().current_scene.add_child(bullet)
+	if shoot_sound:
+		shoot_sound.play()
+
+	sprite_upper.play_backwards(shoot_anim)
+	await get_tree().create_timer(half_time).timeout
+	sprite_upper.speed_scale = 1.0
+	is_shooting = false
+	sprite_upper.play("idle_" + current_dir_name)
+
+func show_glow(color: Color) -> void:
+	if glow == null:
+		return
+	if glow_tween and glow_tween.is_valid():
+		glow_tween.kill()
+	
+	glow.modulate = Color(color.r, color.g, color.b, 0.75)
+	glow_tween = create_tween()
+	glow_tween.tween_property(glow, "modulate:a", 0.0, 0.4)
+
+func take_damage(amount: int) -> void:
+	if is_dying:
+		return
+	health = max(0, health - amount)
+	show_glow(Color.RED)
+	if hit_sound:
+		hit_sound.play()
+	if health <= 0:
+		die()
+
+func get_sprite_radius() -> float:
+	return 16.0 * scale.x
+
+func die() -> void:
+	if is_dying:
+		return
+	is_dying = true
+	set_physics_process(false)
+	sprite_upper.hide()
+	sprite_bottom.hide()
+	
+	if explosion_scene != null:
+		var radius: float = get_sprite_radius()
+		var effect := explosion_scene.instantiate()
+		effect.global_position = global_position
+		if radius:
+			effect.scale = Vector2(1, 1) * (radius / 32.0)
+		get_tree().current_scene.add_child(effect)
+	
+	if hit_sound:
+		hit_sound.play()
+	queue_free()

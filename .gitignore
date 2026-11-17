@@ -1,0 +1,28 @@
+# Godot 4 specific ignores
+.godot/
+/android/
+
+# Build & export outputs
+build/
+export/
+bin/
+*.apk
+*.aab
+*.exe
+*.zip
+
+# Temporary & crash files
+*.tmp
+*.orig
+*.bak
+*~
+
+# OS generated
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Mono/C# (jeśli w przyszłości dodasz skrypty C#)
+.vs/
+*.csproj
+*.sln

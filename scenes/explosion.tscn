@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c7a6kepuh1st1"]
+
+[ext_resource type="Script" uid="uid://cgjspqobjptos" path="res://scripts/explosion.gd" id="1_17npe"]
+[ext_resource type="AudioStream" uid="uid://of6uir45v0ik" path="res://assets/Explosion.wav" id="2_nfeox"]
+
+[sub_resource type="Gradient" id="Gradient_md0e3"]
+colors = PackedColorArray(1, 0.24705882, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4ra3w"]
+noise_type = 0
+seed = 1
+frequency = 0.0358
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yf5fn"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_4ra3w")
+color_ramp = SubResource("Gradient_md0e3")
+
+[node name="Explosion" type="Node2D" unique_id=1246621380]
+script = ExtResource("1_17npe")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=658396788]
+texture = SubResource("NoiseTexture2D_yf5fn")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=248863293]
+stream = ExtResource("2_nfeox")
+autoplay = true

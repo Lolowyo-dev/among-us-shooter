@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://cilimvmtd8lf8"]
+
+[ext_resource type="Script" uid="uid://b4nwlu5svuook" path="res://scripts/hud.gd" id="1_ahhtf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jlsqs"]
+font_size = 20
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.5921569)
+
+[node name="HUD" type="CanvasLayer" unique_id=594576337]
+script = ExtResource("1_ahhtf")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=394904782]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1935199133]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=648695084]
+layout_mode = 2
+text = "Wynik: 0"
+label_settings = SubResource("LabelSettings_jlsqs")
+
+[node name="HealthLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=461472731]
+layout_mode = 2
+text = "Życie: 100 / 100"
+label_settings = SubResource("LabelSettings_jlsqs")
+
+[node name="AmmoLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=842209867]
+layout_mode = 2
+text = "Amunicja: 20 / 20"
+label_settings = SubResource("LabelSettings_jlsqs")

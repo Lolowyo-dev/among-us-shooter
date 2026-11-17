@@ -49,7 +49,7 @@ func _physics_process(delta: float) -> void:
 		shoot(shoot_dir)
 
 func shoot(shoot_dir: Vector2) -> void:
-	if ammo <= 0 or is_shooting:
+	if ammo <= 0 or not can_shoot():
 		return
 	ammo -= 1
 	ammo_changed.emit(ammo, max_ammo)
@@ -73,23 +73,7 @@ func add_ammo(amount: int) -> void:
 func die() -> void:
 	if is_dying:
 		return
-	is_dying = true
-	set_physics_process(false)
-	sprite_upper.hide()
-	sprite_bottom.hide()
-	if hit_box:
-		hit_box.set_deferred("disabled", true)
-	
-	if explosion_scene != null:
-		var radius: float = get_sprite_radius()
-		var effect := explosion_scene.instantiate()
-		effect.global_position = global_position
-		if radius:
-			effect.scale = Vector2(1, 1) * (radius / 32.0)
-		get_tree().current_scene.add_child(effect)
-	
-	if hit_sound:
-		hit_sound.play()
+	super.die()
 	
 	await get_tree().create_timer(0.6).timeout
 	get_tree().reload_current_scene()

@@ -19,6 +19,7 @@ const BASE_SPEED: float = 175.0
 @onready var hit_sound: AudioStreamPlayer2D = get_node_or_null("HitSound")
 @onready var glow: Sprite2D = get_node_or_null("Glow")
 var glow_tween: Tween
+var shoot_timer: Timer
 
 var health: int = 100
 var direction: Vector2 = Vector2.RIGHT
@@ -31,6 +32,13 @@ var start_position: Vector2
 func _ready() -> void:
 	start_position = global_position
 	health = max_health
+	
+	shoot_timer = Timer.new()
+	shoot_timer.one_shot = true
+	add_child(shoot_timer)
+	
+	if sprite_upper:
+		sprite_upper.animation_finished.connect(_on_sprite_upper_animation_finished)
 
 func update_animations(dir: Vector2) -> void:
 	if dir != Vector2.ZERO and not is_shooting:
@@ -61,11 +69,17 @@ func update_animations(dir: Vector2) -> void:
 	if not is_shooting:
 		sprite_upper.play("idle_" + current_dir_name)
 
+func can_shoot() -> bool:
+	return not is_dying and bullet_scene != null and shoot_timer.is_stopped()
+
 func shoot(shoot_dir: Vector2) -> void:
-	if bullet_scene == null or is_shooting:
+	if not can_shoot():
 		return
+	
+	shoot_timer.start(shoot_cooldown)
 	is_shooting = true
 	
+	# kierunek strzalu
 	var shoot_anim: String = "shoot_side"
 	if shoot_dir != Vector2.ZERO:
 		look_direction = shoot_dir
@@ -81,32 +95,26 @@ func shoot(shoot_dir: Vector2) -> void:
 			var is_left: bool = shoot_dir.x < 0
 			sprite_upper.flip_h = is_left
 			sprite_bottom.flip_h = is_left
-			fire_point.position = Vector2(11 * sign(shoot_dir.x), -4)
-		if velocity != Vector2.ZERO:
-			sprite_bottom.play("walking_" + current_dir_name)
-		else:
-			sprite_bottom.play("idle_" + current_dir_name)
-	var half_time: float = shoot_cooldown / 2.0
-	var frames: int = sprite_upper.sprite_frames.get_frame_count(shoot_anim)
-	var fps: float = sprite_upper.sprite_frames.get_animation_speed(shoot_anim)
-	sprite_upper.speed_scale = (frames / fps) / half_time
-
-	sprite_upper.play(shoot_anim)
-	await get_tree().create_timer(half_time).timeout
-
+			fire_point.position = Vector2(11 * sign(shoot_dir.x), -4) 
+	
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = fire_point.global_position
 	bullet.direction = look_direction
 	bullet.scale = self.scale * bullet_scale
 	get_tree().current_scene.add_child(bullet)
+	
 	if shoot_sound:
 		shoot_sound.play()
+	
+	sprite_upper.play(shoot_anim)
 
-	sprite_upper.play_backwards(shoot_anim)
-	await get_tree().create_timer(half_time).timeout
-	sprite_upper.speed_scale = 1.0
-	is_shooting = false
-	sprite_upper.play("idle_" + current_dir_name)
+func _on_sprite_upper_animation_finished() -> void:
+	if is_dying:
+		return
+	
+	if sprite_upper.animation.begins_with("shoot_"):
+		is_shooting = false
+		sprite_upper.play("idle_" + current_dir_name)
 
 func show_glow(color: Color) -> void:
 	if glow == null:
@@ -135,7 +143,16 @@ func die() -> void:
 	if is_dying:
 		return
 	is_dying = true
+	is_shooting = false
+	
+	if glow_tween and glow_tween.is_valid():
+		glow_tween.kill()
+	
+	# Wyłączenie fizyki i kolizji
 	set_physics_process(false)
+	set_deferred("collision_layer", 0)
+	set_deferred("collision_mask", 0)
+	
 	sprite_upper.hide()
 	sprite_bottom.hide()
 	
@@ -149,4 +166,6 @@ func die() -> void:
 	
 	if hit_sound:
 		hit_sound.play()
-	queue_free()
+	
+	if not is_in_group(Constants.GROUP_PLAYER):
+		queue_free()

@@ -60,16 +60,20 @@ func take_damage(amount: int) -> void:
 	super.take_damage(amount)
 	health_changed.emit(health, max_health)
 
-func heal(amount: int) -> void:
-	if is_dying:
-		return
+func heal(amount: int) -> bool:
+	if is_dying or health >= max_health:
+		return false
 	health = min(max_health, health + amount)
 	show_glow(Color.GREEN)
 	health_changed.emit(health, max_health)
+	return true
 
-func add_ammo(amount: int) -> void:
+func add_ammo(amount: int) -> bool:
+	if is_dying or ammo >= max_ammo:
+		return false
 	ammo = min(max_ammo, ammo + amount)
 	ammo_changed.emit(ammo, max_ammo)
+	return true
 
 func die() -> void:
 	if is_dying:

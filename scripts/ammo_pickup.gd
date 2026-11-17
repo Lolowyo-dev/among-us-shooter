@@ -9,7 +9,6 @@ func _ready() -> void:
 	ammo_amount = randi_range(min_amount, max_ammo_amount)
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group(Constants.GROUP_PLAYER):
-		if body.has_method("add_ammo"):
-			body.add_ammo(ammo_amount)
-		queue_free()
+	if body is Player:
+		if body.add_ammo(ammo_amount):
+			queue_free()

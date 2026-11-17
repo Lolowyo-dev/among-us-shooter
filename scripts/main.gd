@@ -2,6 +2,7 @@ extends Node2D
 
 @export var medkit_scene: PackedScene
 @export var ammo_scene: PackedScene
+@export var max_pickups: int = 8
 
 @onready var ground: TileMapLayer = $Ground
 @onready var player: Player = $Player
@@ -10,6 +11,10 @@ extends Node2D
 func _ready() -> void:
 	GameState.calculate_bounds(ground)
 	GameState.reset_game()
+	
+	for child in get_children():
+		if child is Medkit or child is AmmoPickup:
+			child.add_to_group(Constants.GROUP_PICKUPS)
 	
 	if player != null:
 		if hud != null:
@@ -23,9 +28,20 @@ func _on_player_died() -> void:
 func spawn_pickup(scene: PackedScene) -> void:
 	if scene == null:
 		return
-	var pickup = scene.instantiate()
+		
+	var pickup := scene.instantiate() as Node2D
+	pickup.add_to_group(Constants.GROUP_PICKUPS)
+	
+	var spawn_pos := GameState.get_random_map_position(64.0)
+	if player != null and spawn_pos.distance_to(player.global_position) < 80.0:
+		spawn_pos = GameState.get_random_map_position(64.0)
+	
 	pickup.global_position = GameState.get_random_map_position()
 	add_child(pickup)
+	
+	pickup.scale = Vector2.ZERO
+	var tween := create_tween()
+	tween.tween_property(pickup, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _on_spawn_timer_timeout() -> void:
 	if randf() < 0.4:

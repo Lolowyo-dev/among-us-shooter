@@ -4,7 +4,7 @@ extends Area2D
 @export var speed: float = 300.0
 @export var max_distance: float = 600.0
 @export var damage: int = 10
-@export var target_group: String = "enemies"
+@export var target_group: String = Constants.GROUP_ENEMIES
 
 var direction: Vector2 = Vector2.RIGHT
 var start_position: Vector2

@@ -129,7 +129,7 @@ func take_damage(amount: int) -> void:
 		die()
 
 func get_sprite_radius() -> float:
-	return 16.0 * scale.x
+	return Constants.BASE_SPRITE_RADIUS * scale.x
 
 func die() -> void:
 	if is_dying:
@@ -144,7 +144,7 @@ func die() -> void:
 		var effect := explosion_scene.instantiate()
 		effect.global_position = global_position
 		if radius:
-			effect.scale = Vector2(1, 1) * (radius / 32.0)
+			effect.scale = Vector2(1, 1) * (radius / Constants.BASE_EXPLOSION_RADIUS)
 		get_tree().current_scene.add_child(effect)
 	
 	if hit_sound:

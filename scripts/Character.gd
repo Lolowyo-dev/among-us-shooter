@@ -125,10 +125,14 @@ func spawn_bullet() -> void:
 	bullet.global_position = fire_point.global_position
 	bullet.direction = look_direction
 	bullet.scale = self.scale * bullet_scale
+	_setup_bullet(bullet)
 	get_tree().current_scene.add_child(bullet)
 	
 	if shoot_sound:
 		shoot_sound.play()
+
+func _setup_bullet(_bullet: Node) -> void:
+	pass
 
 func _on_sprite_upper_animation_finished() -> void:
 	if is_dying:

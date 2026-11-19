@@ -1,9 +1,12 @@
 class_name Bullet
 extends Area2D
 
-@export var speed: float = 300.0
-@export var max_distance: float = 600.0
-@export var damage: int = 20
+@export var BASE_SPEED: float = 150
+var speed: float = BASE_SPEED
+@export var BASE_DISTANCE: float = 500
+var max_distance: float = BASE_DISTANCE
+@export var BASE_DAMAGE: float = 20.0
+var damage: int = int(BASE_DAMAGE)
 @export var target_group: String = Constants.GROUP_ENEMIES
 
 var direction: Vector2 = Vector2.RIGHT
@@ -28,7 +31,7 @@ func setup(data: ProjectileData, shoot_direction: Vector2) -> void:
 	
 	var final_scale: float = data.scale
 	if data.scale_by_damage and data.damage > 0:
-		final_scale *= ((float(data.damage) / 20.0))
+		final_scale *= ((float(data.damage) / BASE_DAMAGE))
 	scale = Vector2.ONE * final_scale
 
 func _on_body_entered(body: Node2D) -> void:

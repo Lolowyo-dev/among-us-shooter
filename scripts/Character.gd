@@ -75,7 +75,7 @@ func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) ->
 		sprite_upper.play("idle_" + current_dir_name)
 
 func can_shoot() -> bool:
-	return not is_dying and shoot_timer.is_stopped() and shoot_phase == ShootPhase.IDLE
+	return not is_dying and projectile_data != null and projectile_data.scene != null and shoot_timer.is_stopped() and shoot_phase == ShootPhase.IDLE
 
 func shoot(shoot_dir: Vector2) -> void:
 	if not can_shoot():
@@ -123,7 +123,6 @@ func spawn_bullet() -> void:
 		return
 	
 	var bullet := projectile_data.scene.instantiate() as Bullet
-	bullet.global_position = fire_point.global_position
 	if bullet == null:
 		push_error("Błąd: Scena w ProjectileData musi dziedziczyć po Bullet!")
 		return

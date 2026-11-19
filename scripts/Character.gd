@@ -3,11 +3,12 @@ extends CharacterBody2D
 
 @export var speed: float = 175.0
 @export var max_health: int = 100
-@export var bullet_scene: PackedScene
-@export var bullet_scale: float = 1.0
 @export var explosion_scene: PackedScene
 @export var walk_cycle_time: float = 0.3
 @export var shoot_cooldown: float = 0.35
+
+@export_group("Pocisk")
+@export var projectile_data: ProjectileData
 
 const BASE_SPEED: float = 175.0
 
@@ -74,7 +75,7 @@ func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) ->
 		sprite_upper.play("idle_" + current_dir_name)
 
 func can_shoot() -> bool:
-	return not is_dying and bullet_scene != null and shoot_timer.is_stopped() and shoot_phase == ShootPhase.IDLE
+	return not is_dying and shoot_timer.is_stopped() and shoot_phase == ShootPhase.IDLE
 
 func shoot(shoot_dir: Vector2) -> void:
 	if not can_shoot():
@@ -118,26 +119,23 @@ func shoot(shoot_dir: Vector2) -> void:
 	sprite_upper.play(current_shoot_anim)
 
 func spawn_bullet() -> void:
-	if bullet_scene == null or is_dying:
+	if projectile_data == null or projectile_data.scene == null:
 		return
-		
-	var bullet = bullet_scene.instantiate()
+	
+	var bullet := projectile_data.scene.instantiate() as Bullet
 	bullet.global_position = fire_point.global_position
-	bullet.direction = look_direction
-	bullet.scale = self.scale * bullet_scale
-	_setup_bullet(bullet)
+	if bullet == null:
+		push_error("Błąd: Scena w ProjectileData musi dziedziczyć po Bullet!")
+		return
+	
+	bullet.global_position = fire_point.global_position
+	bullet.setup(projectile_data, look_direction)
 	get_tree().current_scene.add_child(bullet)
 	
 	if shoot_sound:
 		shoot_sound.play()
 
-func _setup_bullet(_bullet: Node) -> void:
-	pass
-
 func _on_sprite_upper_animation_finished() -> void:
-	if is_dying:
-		return
-	
 	match shoot_phase:
 		ShootPhase.CLOSING_EYE:
 			spawn_bullet()
@@ -188,6 +186,9 @@ func die() -> void:
 	set_deferred("collision_layer", 0)
 	set_deferred("collision_mask", 0)
 	
+	sprite_upper.stop()
+	sprite_bottom.stop()
+	shoot_timer.stop()
 	sprite_upper.hide()
 	sprite_bottom.hide()
 	

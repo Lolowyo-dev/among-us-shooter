@@ -3,11 +3,6 @@ extends Character
 
 @export var max_patrol_distance: float = 100.0
 
-@export_group("Pocisk")
-@export var bullet_damage: int = 20
-@export var bullet_speed: float = 150.0
-@export var bullet_range: float = 600.0
-
 func _physics_process(_delta: float) -> void:
 	velocity = direction * speed
 	update_animations(velocity)
@@ -25,9 +20,3 @@ func die() -> void:
 
 func _on_timer_timeout() -> void:
 	shoot(direction)
-
-func _setup_bullet(bullet: Node) -> void:
-	if bullet is Bullet:
-		bullet.damage = bullet_damage
-		bullet.speed = bullet_speed
-		bullet.max_distance = bullet_range

@@ -1380,7 +1380,6 @@ zoom = Vector2(2.5, 2.5)
 
 [node name="Enemy" parent="." unique_id=34161637 instance=ExtResource("3_0bbpv")]
 position = Vector2(179, 292)
-bullet_speed = 600.0
 
 [node name="Enemy2" parent="." unique_id=1029513291 instance=ExtResource("3_0bbpv")]
 position = Vector2(328, 446)

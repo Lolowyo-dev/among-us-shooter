@@ -3,7 +3,7 @@ extends Character
 
 @export var max_patrol_distance: float = 100.0
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	velocity = direction * speed
 	update_animations(velocity)
 	move_and_slide()

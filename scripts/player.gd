@@ -25,7 +25,7 @@ func set_camera_limits() -> void:
 		camera_2d.limit_right = int(GameState.map_bounds.end.x)
 		camera_2d.limit_bottom = int(GameState.map_bounds.end.y)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var shoot_dir = Input.get_vector("shoot_left", "shoot_right", "shoot_up", "shoot_down")
 	velocity = input_dir * speed

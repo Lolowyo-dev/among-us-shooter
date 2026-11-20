@@ -170,6 +170,13 @@ func take_damage(amount: int) -> void:
 func get_sprite_radius() -> float:
 	return Constants.BASE_SPRITE_RADIUS * scale.x
 
+func clamp_to_map_bounds() -> void:
+	if not GameState.map_bounds.has_area():
+		return
+	var radius: float = get_sprite_radius()
+	global_position.x = clampf(global_position.x, GameState.map_bounds.position.x + radius, GameState.map_bounds.end.x - radius)
+	global_position.y = clampf(global_position.y, GameState.map_bounds.position.y + radius, GameState.map_bounds.end.y - radius)
+
 func die() -> void:
 	if is_dying:
 		return

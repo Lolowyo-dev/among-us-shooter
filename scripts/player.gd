@@ -40,11 +40,7 @@ func _physics_process(_delta: float) -> void:
 			take_damage(health)
 			break
 	
-	var half_size := Vector2.ZERO
-	if hit_box and hit_box.shape is RectangleShape2D:
-		half_size = hit_box.shape.size / 2.0
-	global_position.x = clamp(global_position.x, GameState.map_bounds.position.x + half_size.x, GameState.map_bounds.end.x - half_size.x)
-	global_position.y = clamp(global_position.y, GameState.map_bounds.position.y + half_size.y, GameState.map_bounds.end.y - half_size.y)
+	clamp_to_map_bounds()
 
 	if shoot_dir != Vector2.ZERO:
 		shoot(shoot_dir)

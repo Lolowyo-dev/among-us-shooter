@@ -24,10 +24,9 @@
 [ext_resource type="Texture2D" uid="uid://ept301u6dmic" path="res://assets/enemy/enemy_lower_up_03.png" id="22_2tuss"]
 [ext_resource type="AudioStream" uid="uid://cvm88oylop3ac" path="res://assets/Hit_hurt.wav" id="22_wrm80"]
 
-[sub_resource type="Resource" id="Resource_nxtc6"]
+[sub_resource type="Resource" id="Resource_wp0k4"]
 script = ExtResource("4_6awcb")
 scene = ExtResource("3_c4w8v")
-speed = 150.0
 scale_by_damage = true
 metadata/_custom_type_script = "uid://bn6rqec46xyeh"
 
@@ -176,9 +175,17 @@ animations = [{
 
 [node name="Enemy" type="CharacterBody2D" unique_id=34161637 groups=["enemies"]]
 script = ExtResource("1_md0e3")
+detection_range = 100.0
+chase_speed = 60.0
+size_variation_percent = 10.0
+speed_variation_percent = 10.0
+health_variation_percent = 10.0
+patrol_variation_percent = 10.0
+bullet_damage_variation_percent = 10.0
+bullet_speed_variation_percent = 5.0
 speed = 75.0
 explosion_scene = ExtResource("2_5uy6h")
-projectile_data = SubResource("Resource_nxtc6")
+projectile_data = SubResource("Resource_wp0k4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1190298278]
 shape = SubResource("RectangleShape2D_g4v7s")

@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dp2hrhv3sywmu" path="res://scenes/enemy.tscn" id="3_0bbpv"]
 [ext_resource type="PackedScene" uid="uid://cpk7vst7tcunv" path="res://scenes/medkit.tscn" id="4_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://cw05ufudsjc5w" path="res://scenes/ammo_pickup.tscn" id="5_c01mt"]
+[ext_resource type="PackedScene" uid="uid://bda1hna11er2s" path="res://scenes/enemy_bullet.tscn" id="8_q8u5g"]
+[ext_resource type="Script" uid="uid://bn6rqec46xyeh" path="res://scripts/ProjectileData.gd" id="9_lhr70"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rwgxs"]
 texture = ExtResource("1_nnsk1")
@@ -1346,10 +1348,16 @@ texture = ExtResource("1_nnsk1")
 [sub_resource type="TileSet" id="TileSet_g4v7s"]
 sources/0 = SubResource("TileSetAtlasSource_rwgxs")
 
+[sub_resource type="Resource" id="Resource_q8u5g"]
+script = ExtResource("9_lhr70")
+scene = ExtResource("8_q8u5g")
+damage = 50
+scale = 2.0
+scale_by_damage = true
+metadata/_custom_type_script = "uid://bn6rqec46xyeh"
+
 [node name="World" type="Node2D" unique_id=1423610365]
 script = ExtResource("1_nxtc6")
-medkit_scene = ExtResource("4_vcsgt")
-ammo_scene = ExtResource("5_c01mt")
 
 [node name="HUD" parent="." unique_id=594576337 instance=ExtResource("1_c01mt")]
 
@@ -1387,9 +1395,15 @@ position = Vector2(328, 446)
 [node name="Enemy3" parent="." unique_id=1936404000 instance=ExtResource("3_0bbpv")]
 position = Vector2(200, 573)
 
-[node name="Enemy4" parent="." unique_id=1503823723 instance=ExtResource("3_0bbpv")]
+[node name="Boss" parent="." unique_id=1503823723 instance=ExtResource("3_0bbpv")]
 position = Vector2(250, 798)
 scale = Vector2(5, 5)
+max_patrol_distance = 150.0
+detection_range = 150.0
+chase_speed = 40.0
+speed = 50.0
+max_health = 500
+projectile_data = SubResource("Resource_q8u5g")
 
 [node name="SpawnTimer" type="Timer" parent="." unique_id=1901542421]
 wait_time = 8.0

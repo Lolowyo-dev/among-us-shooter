@@ -15,6 +15,8 @@ func _ready() -> void:
 	for child in get_children():
 		if child is Medkit or child is AmmoPickup:
 			child.add_to_group(Constants.GROUP_PICKUPS)
+		elif child is Enemy:
+			child.target = player
 	
 	if player != null:
 		if hud != null:

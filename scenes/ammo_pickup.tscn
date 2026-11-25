@@ -8,6 +8,8 @@ size = Vector2(8, 10)
 
 [node name="AmmoPickup" type="Area2D" unique_id=414986738]
 script = ExtResource("1_ieo5p")
+base_amount = 10
+variation_percent = 20.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=893399759]
 texture = ExtResource("2_jvvnm")

@@ -1,9 +1,5 @@
 class_name Medkit
-extends Area2D
+extends Pickup
 
-@export var heal_amount: int = 25
-
-func _on_body_entered(body: Node2D) -> void:
-	if body is Player:
-		if body.heal(heal_amount):
-			queue_free()
+func _apply_pickup(player: Player) -> bool:
+	return player.heal(amount)

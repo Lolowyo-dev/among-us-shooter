@@ -8,6 +8,8 @@ size = Vector2(12, 12)
 
 [node name="Medkit" type="Area2D" unique_id=414339235]
 script = ExtResource("1_1ojt4")
+base_amount = 40
+variation_percent = 20.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1577278531]
 texture = ExtResource("2_vvkl3")

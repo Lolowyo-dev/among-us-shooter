@@ -1,12 +1,12 @@
 class_name Enemy
 extends Character
 
-@export_group("Patrol")
-@export var max_patrol_distance: float = 100.0
+@export_group("AI / Patrol")
+@export_range(0.0, 1000.0, 10.0, "suffix:px") var max_patrol_distance: float = 100.0
 
-@export_group("AI / Chase")
-@export var detection_range: float = 220.0
-@export var chase_speed: float = 110.0
+@export_group("AI / Pościg")
+@export_range(0.0, 1000.0, 10.0, "suffix:px") var detection_range: float = 220.0
+@export_range(0.0, 1000.0, 5.0, "suffix:px/s") var chase_speed: float = 110.0
 
 @export_group("Losowość / Wariancja")
 @export_range(0.0, 100.0, 1.0, "suffix:%") var general_variation_percent: float = 0.0
@@ -19,12 +19,18 @@ extends Character
 @export_range(0.0, 100.0, 1.0, "suffix:%") var bullet_damage_variation_percent: float = 0.0
 @export_range(0.0, 100.0, 1.0, "suffix:%") var bullet_speed_variation_percent: float = 0.0
 
+@onready var fire_timer: Timer = $FireTimer
+
 var target: Node2D = null
 var is_chasing: bool = false
 
 func _ready() -> void:
 	super._ready()
 	apply_random_variations()
+	
+	if fire_timer != null:
+		fire_timer.wait_time = shoot_cooldown
+		fire_timer.start()
 
 func apply_random_variations() -> void:
 	# Wielkość (skala):
@@ -134,7 +140,7 @@ func die() -> void:
 	GameState.add_score(1)
 	super.die()
 
-func _on_timer_timeout() -> void:
+func _on_fire_timer_timeout() -> void:
 	if is_chasing and target != null and is_instance_valid(target):
 		var shoot_dir: Vector2 = (target.global_position - global_position).normalized()
 		shoot(shoot_dir)

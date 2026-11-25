@@ -1,13 +1,16 @@
 class_name Character
 extends CharacterBody2D
 
-@export var speed: float = 175.0
-@export var max_health: int = 100
-@export var explosion_scene: PackedScene
-@export var walk_cycle_time: float = 0.3
-@export var shoot_cooldown: float = 0.35
+@export_group("Ruch i Animacja")
+@export_range(0.0, 1000.0, 5.0, "suffix:px/s") var speed: float = 175.0
+@export_range(0.05, 2.0, 0.05, "suffix:s") var walk_cycle_time: float = 0.3
 
-@export_group("Pocisk")
+@export_group("Zdrowie i Efekty")
+@export_range(1, 10000, 1) var max_health: int = 100
+@export var explosion_scene: PackedScene
+
+@export_group("Walka / Pocisk")
+@export_range(0.05, 5.0, 0.05, "suffix:s") var shoot_cooldown: float = 0.35
 @export var projectile_data: ProjectileData
 
 const BASE_SPEED: float = 175.0
@@ -109,7 +112,7 @@ func shoot(shoot_dir: Vector2) -> void:
 	
 	var frames: int = sprite_upper.sprite_frames.get_frame_count(current_shoot_anim)
 	
-	var half_time: float = shoot_cooldown * 0.45
+	var half_time: float = minf(shoot_cooldown * 0.45, 0.25)
 	var fps: float = sprite_upper.sprite_frames.get_animation_speed(current_shoot_anim)
 	if fps > 0.0 and half_time > 0.0:
 		sprite_upper.speed_scale = (frames / fps) / half_time

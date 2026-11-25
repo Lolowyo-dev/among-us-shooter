@@ -185,12 +185,13 @@ bullet_damage_variation_percent = 10.0
 bullet_speed_variation_percent = 5.0
 speed = 75.0
 explosion_scene = ExtResource("2_5uy6h")
+shoot_cooldown = 1.0
 projectile_data = SubResource("Resource_wp0k4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1190298278]
 shape = SubResource("RectangleShape2D_g4v7s")
 
-[node name="Timer" type="Timer" parent="." unique_id=1321664587]
+[node name="FireTimer" type="Timer" parent="." unique_id=1321664587]
 wait_time = 2.0
 autostart = true
 
@@ -214,4 +215,4 @@ position = Vector2(11, -4)
 sprite_frames = SubResource("SpriteFrames_g4v7s")
 animation = &"walking_up"
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="FireTimer" to="." method="_on_fire_timer_timeout"]

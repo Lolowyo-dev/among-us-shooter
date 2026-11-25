@@ -5,7 +5,8 @@ signal health_changed(current_hp: int, max_hp: int)
 signal ammo_changed(current_ammo: int, max_ammo: int)
 signal died()
 
-@export var max_ammo: int = 20
+@export_group("Amunicja")
+@export_range(1, 999, 1) var max_ammo: int = 20
 var ammo: int = max_ammo
 
 @onready var hit_box: CollisionShape2D = $HitBox

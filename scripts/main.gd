@@ -1,8 +1,9 @@
 extends Node2D
 
+@export_group("Spawner Pickupów")
 @export var medkit_scene: PackedScene
 @export var ammo_scene: PackedScene
-@export var max_pickups: int = 8
+@export_range(0, 50, 1) var max_pickups: int = 8
 
 @onready var ground: TileMapLayer = $Ground
 @onready var player: Player = $Player
@@ -13,7 +14,7 @@ func _ready() -> void:
 	GameState.reset_game()
 	
 	for child in get_children():
-		if child is Medkit or child is AmmoPickup:
+		if child is Pickup:
 			child.add_to_group(Constants.GROUP_PICKUPS)
 		elif child is Enemy:
 			child.target = player
@@ -53,7 +54,7 @@ func spawn_pickup(scene: PackedScene) -> void:
 	var tween := create_tween()
 	tween.tween_property(pickup, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-func _on_spawn_timer_timeout() -> void:
+func _on_pickup_spawn_timer_timeout() -> void:
 	if get_tree().get_node_count_in_group(Constants.GROUP_PICKUPS) >= max_pickups:
 		return
 	

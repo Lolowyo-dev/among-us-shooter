@@ -18,6 +18,7 @@ noise = SubResource("FastNoiseLite_4ra3w")
 color_ramp = SubResource("Gradient_md0e3")
 
 [node name="Explosion" type="Node2D" unique_id=1246621380]
+z_index = 5
 script = ExtResource("1_17npe")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=658396788]

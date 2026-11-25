@@ -7,6 +7,9 @@
 size = Vector2(8, 10)
 
 [node name="AmmoPickup" type="Area2D" unique_id=414986738]
+z_index = 1
+collision_layer = 32
+collision_mask = 2
 script = ExtResource("1_ieo5p")
 base_amount = 10
 variation_percent = 20.0

@@ -7,6 +7,9 @@
 size = Vector2(12, 12)
 
 [node name="Medkit" type="Area2D" unique_id=414339235]
+z_index = 1
+collision_layer = 32
+collision_mask = 2
 script = ExtResource("1_1ojt4")
 base_amount = 40
 variation_percent = 20.0

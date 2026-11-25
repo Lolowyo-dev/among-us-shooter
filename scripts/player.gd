@@ -26,7 +26,7 @@ func set_camera_limits() -> void:
 
 func _physics_process(_delta: float) -> void:
 	var input_dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var shoot_dir = Input.get_vector("shoot_left", "shoot_right", "shoot_up", "shoot_down")
+	var shoot_dir := Input.get_vector("shoot_left", "shoot_right", "shoot_up", "shoot_down")
 	velocity = input_dir * speed
 	
 	update_animations(input_dir, shoot_dir)

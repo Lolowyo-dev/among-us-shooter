@@ -7,7 +7,7 @@ var speed: float = BASE_SPEED
 var max_distance: float = BASE_DISTANCE
 @export var BASE_DAMAGE: float = 20.0
 var damage: int = int(BASE_DAMAGE)
-@export var target_group: String = Constants.GROUP_ENEMIES
+@export var target_group: StringName = Constants.GROUP_ENEMIES
 
 var direction: Vector2 = Vector2.RIGHT
 var traveled_distance: float = 0.0

@@ -48,7 +48,7 @@ func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) ->
 	var is_aiming: bool = (aiming_dir != Vector2.ZERO)
 	var active_dir: Vector2 = aiming_dir if is_aiming else move_dir
 	
-	# Ustalenie strony
+	# Ustalenie strony gdy nie strzela
 	if active_dir != Vector2.ZERO and not is_shooting:
 		if abs(active_dir.y) > abs(active_dir.x):
 			current_dir_name = "up" if active_dir.y < 0 else "down"
@@ -111,7 +111,10 @@ func shoot(shoot_dir: Vector2) -> void:
 	
 	var half_time: float = shoot_cooldown * 0.45
 	var fps: float = sprite_upper.sprite_frames.get_animation_speed(current_shoot_anim)
-	sprite_upper.speed_scale = (frames / fps) / half_time
+	if fps > 0.0 and half_time > 0.0:
+		sprite_upper.speed_scale = (frames / fps) / half_time
+	else:
+		sprite_upper.speed_scale = 1.0
 	
 	shoot_phase = ShootPhase.CLOSING_EYE
 	sprite_upper.play(current_shoot_anim)

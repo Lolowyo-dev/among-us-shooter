@@ -25,12 +25,9 @@
 [ext_resource type="Texture2D" uid="uid://dm5cq4h35mtnu" path="res://assets/player/player_lower_up_02.png" id="20_ke2ow"]
 [ext_resource type="Texture2D" uid="uid://1a52shxjbfqk" path="res://assets/player/player_lower_up_03.png" id="21_ujl30"]
 
-[sub_resource type="Resource" id="Resource_wjec0"]
+[sub_resource type="Resource" id="Resource_85g3d"]
 script = ExtResource("4_l71n6")
 scene = ExtResource("2_tuyoq")
-damage = 40
-speed = 300.0
-scale_by_damage = true
 metadata/_custom_type_script = "uid://bn6rqec46xyeh"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
@@ -178,13 +175,8 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D" unique_id=1354506166 groups=["player"]]
 script = ExtResource("1_qlg0r")
-max_ammo = null
-speed = null
-max_health = null
 explosion_scene = ExtResource("3_tuyoq")
-walk_cycle_time = null
-shoot_cooldown = null
-projectile_data = SubResource("Resource_wjec0")
+projectile_data = SubResource("Resource_85g3d")
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=220504]
 shape = SubResource("RectangleShape2D_g2els")

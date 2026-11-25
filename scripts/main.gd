@@ -22,8 +22,7 @@ func _ready() -> void:
 		if hud != null:
 			hud.setup(player)
 		player.died.connect(_on_player_died)
-	
-	player.set_camera_limits()
+		player.set_camera_limits()
 
 func _on_player_died() -> void:
 	var restart_timer := Timer.new()

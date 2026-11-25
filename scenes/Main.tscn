@@ -1384,11 +1384,6 @@ position = Vector2(250, 675)
 
 [node name="Player" parent="." unique_id=1354506166 instance=ExtResource("2_rvslj")]
 position = Vector2(259, 93)
-max_ammo = 20
-speed = 175.0
-max_health = 100
-walk_cycle_time = 0.3
-shoot_cooldown = 0.35
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1296387976]
 zoom = Vector2(2.5, 2.5)

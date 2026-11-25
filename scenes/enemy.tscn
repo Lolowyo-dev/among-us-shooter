@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c7a6kepuh1st1" path="res://scenes/explosion.tscn" id="2_5uy6h"]
 [ext_resource type="PackedScene" uid="uid://bda1hna11er2s" path="res://scenes/enemy_bullet.tscn" id="3_c4w8v"]
 [ext_resource type="Texture2D" uid="uid://dmgmkanqarqow" path="res://assets/enemy/enemy_upper_right_01.png" id="4_5uy6h"]
-[ext_resource type="Script" uid="uid://bn6rqec46xyeh" path="res://scripts/ProjectileData.gd" id="4_6awcb"]
+[ext_resource type="Script" uid="uid://bn6rqec46xyeh" path="res://scripts/projectile_data.gd" id="4_6awcb"]
 [ext_resource type="Texture2D" uid="uid://dxsjdpds5frlr" path="res://assets/enemy/enemy_upper_down_01.png" id="4_wrm80"]
 [ext_resource type="Texture2D" uid="uid://cut7neyxnegcf" path="res://assets/enemy/enemy_upper_up_01.png" id="6_6awcb"]
 [ext_resource type="Texture2D" uid="uid://cdbug2obieyau" path="res://assets/enemy/enemy_upper_down_02.png" id="7_wjec0"]
@@ -146,7 +146,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("17_ekh6n")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"walking_down",
 "speed": 10.0
 }, {
@@ -157,7 +157,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("20_605iw")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"walking_side",
 "speed": 10.0
 }, {
@@ -168,7 +168,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("22_2tuss")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"walking_up",
 "speed": 10.0
 }]
@@ -203,15 +203,15 @@ modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.5, 0.5)
 texture = SubResource("GradientTexture2D_wrm80")
 
-[node name="sprite_upper" type="AnimatedSprite2D" parent="." unique_id=804810479]
+[node name="SpriteUpper" type="AnimatedSprite2D" parent="." unique_id=804810479]
 sprite_frames = SubResource("SpriteFrames_yf5fn")
 animation = &"idle_side"
 
-[node name="FirePoint" type="Marker2D" parent="sprite_upper" unique_id=537244235]
+[node name="FirePoint" type="Marker2D" parent="SpriteUpper" unique_id=537244235]
 position = Vector2(11, -4)
 
-[node name="sprite_bottom" type="AnimatedSprite2D" parent="." unique_id=744217028]
+[node name="SpriteBottom" type="AnimatedSprite2D" parent="." unique_id=744217028]
 sprite_frames = SubResource("SpriteFrames_g4v7s")
-animation = &"walking_side"
+animation = &"walking_up"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

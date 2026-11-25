@@ -12,9 +12,9 @@ extends CharacterBody2D
 
 const BASE_SPEED: float = 175.0
 
-@onready var sprite_upper: AnimatedSprite2D = $sprite_upper
-@onready var sprite_bottom: AnimatedSprite2D = $sprite_bottom
-@onready var fire_point: Marker2D = $sprite_upper/FirePoint
+@onready var sprite_upper: AnimatedSprite2D = $SpriteUpper
+@onready var sprite_bottom: AnimatedSprite2D = $SpriteBottom
+@onready var fire_point: Marker2D = $SpriteUpper/FirePoint
 
 @onready var shoot_sound: AudioStreamPlayer2D = get_node_or_null("ShootSound")
 @onready var hit_sound: AudioStreamPlayer2D = get_node_or_null("HitSound")
@@ -63,9 +63,12 @@ func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) ->
 		var anim_name: String = "walking_" + current_dir_name
 		var frames: int = sprite_bottom.sprite_frames.get_frame_count(anim_name)
 		var fps: float = sprite_bottom.sprite_frames.get_animation_speed(anim_name)
-		var default_duration: float = frames / fps
-		var speed_ratio: float = velocity.length() / BASE_SPEED
-		sprite_bottom.speed_scale = (default_duration / walk_cycle_time) * speed_ratio
+		if fps > 0.0 and walk_cycle_time > 0.0:
+			var default_duration: float = frames / fps
+			var speed_ratio: float = velocity.length() / BASE_SPEED
+			sprite_bottom.speed_scale = (default_duration / walk_cycle_time) * speed_ratio
+		else:
+			sprite_bottom.speed_scale = 1.0
 		sprite_bottom.play(anim_name)
 	else:
 		sprite_bottom.speed_scale = 1.0
@@ -75,7 +78,7 @@ func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) ->
 		sprite_upper.play("idle_" + current_dir_name)
 
 func can_shoot() -> bool:
-	return not is_dying and projectile_data != null and projectile_data.scene != null and shoot_timer.is_stopped() and shoot_phase == ShootPhase.IDLE
+	return not is_dying and projectile_data != null and projectile_data.scene != null and shoot_timer.is_stopped()
 
 func shoot(shoot_dir: Vector2) -> void:
 	if not can_shoot():
@@ -103,13 +106,6 @@ func shoot(shoot_dir: Vector2) -> void:
 			fire_point.position = Vector2(11 * sign(shoot_dir.x), -4) 
 	
 	var frames: int = sprite_upper.sprite_frames.get_frame_count(current_shoot_anim)
-	
-	if frames <= 1:
-		spawn_bullet()
-		sprite_upper.play(current_shoot_anim)
-		shoot_phase = ShootPhase.IDLE
-		is_shooting = false
-		return
 	
 	var half_time: float = shoot_cooldown * 0.45
 	var fps: float = sprite_upper.sprite_frames.get_animation_speed(current_shoot_anim)

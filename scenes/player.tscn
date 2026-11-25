@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bpjq7dx7widbq" path="res://scenes/player_bullet.tscn" id="2_tuyoq"]
 [ext_resource type="AudioStream" uid="uid://cvm88oylop3ac" path="res://assets/Hit_hurt.wav" id="3_dqkch"]
 [ext_resource type="PackedScene" uid="uid://c7a6kepuh1st1" path="res://scenes/explosion.tscn" id="3_tuyoq"]
-[ext_resource type="Script" uid="uid://bn6rqec46xyeh" path="res://scripts/ProjectileData.gd" id="4_l71n6"]
+[ext_resource type="Script" uid="uid://bn6rqec46xyeh" path="res://scripts/projectile_data.gd" id="4_l71n6"]
 [ext_resource type="Texture2D" uid="uid://7e2ihifwt5u3" path="res://assets/player/player_upper_right_01.png" id="4_tuyoq"]
 [ext_resource type="Texture2D" uid="uid://dfviybfvbrjwp" path="res://assets/player/player_upper_right_02.png" id="7_3v2ag"]
 [ext_resource type="Texture2D" uid="uid://btkl2acbe1qx" path="res://assets/player/player_upper_down_01.png" id="7_oprun"]
@@ -149,7 +149,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("16_l71n6")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"walking_down",
 "speed": 10.0
 }, {
@@ -160,7 +160,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("13_a8ls1")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"walking_side",
 "speed": 10.0
 }, {
@@ -171,7 +171,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("21_ujl30")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"walking_up",
 "speed": 10.0
 }]
@@ -195,13 +195,13 @@ modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.5, 0.5)
 texture = SubResource("GradientTexture2D_g4v7s")
 
-[node name="sprite_upper" type="AnimatedSprite2D" parent="." unique_id=2020554994]
+[node name="SpriteUpper" type="AnimatedSprite2D" parent="." unique_id=2020554994]
 sprite_frames = SubResource("SpriteFrames_g4v7s")
 animation = &"idle_side"
 
-[node name="FirePoint" type="Marker2D" parent="sprite_upper" unique_id=105244640]
+[node name="FirePoint" type="Marker2D" parent="SpriteUpper" unique_id=105244640]
 position = Vector2(11, -4)
 
-[node name="sprite_bottom" type="AnimatedSprite2D" parent="." unique_id=52725859]
+[node name="SpriteBottom" type="AnimatedSprite2D" parent="." unique_id=52725859]
 sprite_frames = SubResource("SpriteFrames_yf5fn")
-animation = &"walking_side"
+animation = &"walking_down"

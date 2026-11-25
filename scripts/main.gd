@@ -22,10 +22,16 @@ func _ready() -> void:
 		if hud != null:
 			hud.setup(player)
 		player.died.connect(_on_player_died)
+	
+	player.set_camera_limits()
 
 func _on_player_died() -> void:
-	await get_tree().create_timer(0.8).timeout
-	GameState.restart_game()
+	var restart_timer := Timer.new()
+	restart_timer.one_shot = true
+	restart_timer.wait_time = 0.8
+	restart_timer.timeout.connect(GameState.restart_game)
+	add_child(restart_timer)
+	restart_timer.start()
 
 func spawn_pickup(scene: PackedScene) -> void:
 	if scene == null:
@@ -35,10 +41,13 @@ func spawn_pickup(scene: PackedScene) -> void:
 	pickup.add_to_group(Constants.GROUP_PICKUPS)
 	
 	var spawn_pos := GameState.get_random_map_position(64.0)
-	if player != null and spawn_pos.distance_to(player.global_position) < 80.0:
-		spawn_pos = GameState.get_random_map_position(64.0)
+	if player != null:
+		for attempt in 10:
+			if spawn_pos.distance_to(player.global_position) >= 80.0:
+				break
+			spawn_pos = GameState.get_random_map_position(64.0)
 	
-	pickup.global_position = GameState.get_random_map_position()
+	pickup.global_position = spawn_pos
 	add_child(pickup)
 	
 	pickup.scale = Vector2.ZERO
@@ -46,6 +55,9 @@ func spawn_pickup(scene: PackedScene) -> void:
 	tween.tween_property(pickup, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _on_spawn_timer_timeout() -> void:
+	if get_tree().get_node_count_in_group(Constants.GROUP_PICKUPS) >= max_pickups:
+		return
+	
 	if randf() < 0.4:
 		spawn_pickup(medkit_scene)
 	else:

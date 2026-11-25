@@ -16,7 +16,6 @@ func _ready() -> void:
 	ammo = max_ammo
 	health_changed.emit(health, max_health)
 	ammo_changed.emit(ammo, max_ammo)
-	set_camera_limits()
 
 func set_camera_limits() -> void:
 	if camera_2d != null and GameState.map_bounds.has_area():
@@ -53,8 +52,10 @@ func shoot(shoot_dir: Vector2) -> void:
 	super.shoot(shoot_dir)
 
 func take_damage(amount: int) -> void:
+	var prev_health: int = health
 	super.take_damage(amount)
-	health_changed.emit(health, max_health)
+	if health != prev_health:
+		health_changed.emit(health, max_health)
 
 func heal(amount: int) -> bool:
 	if health >= max_health:

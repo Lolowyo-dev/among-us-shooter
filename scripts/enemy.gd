@@ -101,17 +101,20 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 	clamp_to_map_bounds()
 	
-	if not is_chasing:
-		for i in get_slide_collision_count():
+	for i in get_slide_collision_count():
 			var col := get_slide_collision(i)
-			var normal := col.get_normal()
-			
-			if direction.x > 0.0 and normal.x < -0.3:
-				direction = Vector2.LEFT
+			var collider := col.get_collider()
+			if collider is Player:
+				collider.take_damage(collider.health)
 				break
-			elif direction.x < 0.0 and normal.x > 0.3:
-				direction = Vector2.RIGHT
-				break
+			if not is_chasing:
+				var normal := col.get_normal()
+				if direction.x > 0.0 and normal.x < -0.3:
+					direction = Vector2.LEFT
+					break
+				elif direction.x < 0.0 and normal.x > 0.3:
+					direction = Vector2.RIGHT
+					break
 
 func update_patrol_center() -> void:
 	if not GameState.map_bounds.has_area():

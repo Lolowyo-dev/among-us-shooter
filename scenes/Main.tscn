@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cpk7vst7tcunv" path="res://scenes/medkit.tscn" id="4_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://cw05ufudsjc5w" path="res://scenes/ammo_pickup.tscn" id="5_c01mt"]
 [ext_resource type="PackedScene" uid="uid://bda1hna11er2s" path="res://scenes/enemy_bullet.tscn" id="8_q8u5g"]
-[ext_resource type="Script" uid="uid://bn6rqec46xyeh" path="res://scripts/ProjectileData.gd" id="9_lhr70"]
+[ext_resource type="Script" uid="uid://bn6rqec46xyeh" path="res://scripts/projectile_data.gd" id="9_lhr70"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rwgxs"]
 texture = ExtResource("1_nnsk1")
@@ -1358,6 +1358,8 @@ metadata/_custom_type_script = "uid://bn6rqec46xyeh"
 
 [node name="World" type="Node2D" unique_id=1423610365]
 script = ExtResource("1_nxtc6")
+medkit_scene = ExtResource("4_vcsgt")
+ammo_scene = ExtResource("5_c01mt")
 
 [node name="HUD" parent="." unique_id=594576337 instance=ExtResource("1_c01mt")]
 

@@ -40,7 +40,7 @@ func spawn_pickup(scene: PackedScene) -> void:
 	var pickup := scene.instantiate() as Node2D
 	pickup.add_to_group(Constants.GROUP_PICKUPS)
 	
-	var spawn_pos := GameState.get_random_map_position(64.0)
+	var spawn_pos: Vector2 = GameState.get_random_map_position(64.0)
 	if player != null:
 		for attempt in 10:
 			if spawn_pos.distance_to(player.global_position) >= 80.0:

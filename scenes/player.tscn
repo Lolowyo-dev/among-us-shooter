@@ -178,7 +178,12 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D" unique_id=1354506166 groups=["player"]]
 script = ExtResource("1_qlg0r")
+max_ammo = null
+speed = null
+max_health = null
 explosion_scene = ExtResource("3_tuyoq")
+walk_cycle_time = null
+shoot_cooldown = null
 projectile_data = SubResource("Resource_wjec0")
 
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=220504]

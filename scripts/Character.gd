@@ -48,6 +48,7 @@ func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) ->
 	var is_aiming: bool = (aiming_dir != Vector2.ZERO)
 	var active_dir: Vector2 = aiming_dir if is_aiming else move_dir
 	
+	# Ustalenie strony
 	if active_dir != Vector2.ZERO and not is_shooting:
 		if abs(active_dir.y) > abs(active_dir.x):
 			current_dir_name = "up" if active_dir.y < 0 else "down"
@@ -59,7 +60,8 @@ func update_animations(move_dir: Vector2, aiming_dir: Vector2 = Vector2.ZERO) ->
 			sprite_bottom.flip_h = is_left
 			sprite_upper.flip_h = is_left
 	
-	if active_dir != Vector2.ZERO:
+	# Animacja ruchu
+	if move_dir != Vector2.ZERO:
 		var anim_name: String = "walking_" + current_dir_name
 		var frames: int = sprite_bottom.sprite_frames.get_frame_count(anim_name)
 		var fps: float = sprite_bottom.sprite_frames.get_animation_speed(anim_name)

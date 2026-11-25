@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://blr7jchly28c"]
+
+[ext_resource type="Script" uid="uid://c8uga8sa7udtv" path="res://scripts/pause_menu.gd" id="1_n87rw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uahpa"]
+content_margin_left = 32.0
+content_margin_top = 24.0
+content_margin_right = 32.0
+content_margin_bottom = 24.0
+bg_color = Color(0.09803922, 0.09803922, 0.078431375, 0.9411765)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_n87rw"]
+font_size = 32
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=492065703]
+process_mode = 3
+layer = 10
+script = ExtResource("1_n87rw")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=696046969]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1485165379]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer" unique_id=1348872958]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uahpa")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer" unique_id=415284144]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1964232929]
+unique_name_in_owner = true
+layout_mode = 2
+text = "PAUZA"
+label_settings = SubResource("LabelSettings_n87rw")
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1421113257]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Wznów"
+
+[node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=215804216]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Restart"
+
+[node name="MenuButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=331335571]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Menu główne"

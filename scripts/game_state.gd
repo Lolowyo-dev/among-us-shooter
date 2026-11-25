@@ -2,6 +2,9 @@ extends Node
 
 signal score_changed(new_score: int)
 
+const MAIN_SCENE_PATH: String = "res://scenes/main.tscn"
+const MENU_SCENE_PATH: String = "res://scenes/main_menu.tscn"
+
 var score: int = 0:
 	set(value):
 		score = value
@@ -16,6 +19,14 @@ func reset_game() -> void:
 func restart_game() -> void:
 	reset_game()
 	get_tree().reload_current_scene()
+
+func start_game() -> void:
+	reset_game()
+	get_tree().change_scene_to_file(MAIN_SCENE_PATH)
+
+func go_to_main_menu() -> void:
+	reset_game()
+	get_tree().change_scene_to_file(MENU_SCENE_PATH)
 
 var map_bounds: Rect2
 

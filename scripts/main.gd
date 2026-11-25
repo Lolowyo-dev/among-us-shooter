@@ -9,6 +9,7 @@ extends Node2D
 @onready var player: Player = $Player
 @onready var hud: HUD = $HUD
 @onready var game_over_screen: GameOverScreen = $GameOverScreen
+@onready var pause_menu: PauseMenu = $PauseMenu
 
 var enemies_remaining: int = 0
 var is_game_ended: bool = false
@@ -34,6 +35,10 @@ func _ready() -> void:
 	if game_over_screen != null:
 		game_over_screen.restart_requested.connect(_on_restart_requested)
 		game_over_screen.menu_requested.connect(_on_menu_requested)
+	
+	if pause_menu != null:
+		pause_menu.restart_requested.connect(_on_restart_requested)
+		pause_menu.menu_requested.connect(_on_menu_requested)
 
 func _on_player_died() -> void:
 	if is_game_ended:
@@ -58,6 +63,8 @@ func _start_end_screen_timer(is_victory: bool, delay: float) -> void:
 	end_timer.start()
 
 func _show_end_screen(is_victory: bool) -> void:
+	if pause_menu != null:
+		pause_menu.enabled = false
 	get_tree().paused = true
 	if game_over_screen != null:
 		game_over_screen.show_screen(is_victory, GameState.score)
@@ -68,8 +75,7 @@ func _on_restart_requested() -> void:
 
 func _on_menu_requested() -> void:
 	get_tree().paused = false
-	
-	GameState.restart_game()
+	GameState.go_to_main_menu()
 
 func spawn_pickup(scene: PackedScene) -> void:
 	if scene == null:

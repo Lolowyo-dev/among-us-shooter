@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dmy66mlosobmt"]
 
 [ext_resource type="Script" uid="uid://cgr0qy4jgdi3j" path="res://scripts/main_menu.gd" id="1_l6cm7"]
-[ext_resource type="Script" uid="uid://c8r22c0cvvux0" path="res://scripts/difficulty_setting.gd" id="2_8ln24"]
+[ext_resource type="Script" uid="uid://c8r22c0cvvux0" path="res://scripts/difficulty_settings.gd" id="2_8ln24"]
 [ext_resource type="Resource" uid="uid://xdr3bjyqajka" path="res://resources/easy.tres" id="3_rtw2f"]
 [ext_resource type="Resource" uid="uid://dy65cl0ggjlqd" path="res://resources/normal.tres" id="4_oa1go"]
 [ext_resource type="Resource" uid="uid://cn1w7wkidfpn4" path="res://resources/hard.tres" id="5_tbmy8"]
@@ -17,7 +17,10 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+[sub_resource type="SystemFont" id="SystemFont_jkv2x"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
+font = SubResource("SystemFont_jkv2x")
 font_size = 36
 
 [sub_resource type="LabelSettings" id="LabelSettings_8ln24"]

@@ -1,4 +1,4 @@
-# Ghost Shooter
+# Among Us Shooter
 
 Dynamiczna gra strzelankowa 2D stworzona w silniku **Godot Engine 4.x** (Forward+ / D3D12).
 
@@ -8,7 +8,7 @@ Dynamiczna gra strzelankowa 2D stworzona w silniku **Godot Engine 4.x** (Forward
 | :---------------------- | :---------------------------------------- |
 | **Ruch**                | `W`, `S`, `A`, `D`                        |
 | **Strzał (kierunkowy)** | Strzałki (`Góra`, `Dół`, `Lewo`, `Prawo`) |
-| **Strzał alternatywny** | `Spacja`                                  |
+| **Pauza**               | `Esc`                                     |
 
 ## Wymagania i uruchomienie
 

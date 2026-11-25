@@ -6,6 +6,8 @@ const MAIN_SCENE_PATH: String = "res://scenes/main.tscn"
 const MENU_SCENE_PATH: String = "res://scenes/main_menu.tscn"
 const DEFAULT_DIFFICULTY_PATH: String = "res://resources/normal.tres"
 
+var is_game_ended: bool = false
+
 var score: int = 0:
 	set(value):
 		score = value
@@ -23,6 +25,7 @@ func add_score(points: int = 1) -> void:
 
 func reset_game() -> void:
 	score = 0
+	is_game_ended = false
 
 func restart_game() -> void:
 	reset_game()

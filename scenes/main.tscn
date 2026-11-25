@@ -1352,7 +1352,7 @@ sources/0 = SubResource("TileSetAtlasSource_rwgxs")
 [sub_resource type="Resource" id="Resource_eb6dy"]
 script = ExtResource("9_lhr70")
 scene = ExtResource("8_ya4ey")
-damage = 80
+damage = 40
 metadata/_custom_type_script = "uid://bn6rqec46xyeh"
 
 [node name="World" type="Node2D" unique_id=1423610365]
@@ -1378,8 +1378,6 @@ visible = false
 
 [node name="Player" parent="." unique_id=1354506166 instance=ExtResource("2_rvslj")]
 position = Vector2(476, 279)
-max_ammo = 100
-max_health = 1000
 projectile_data = SubResource("Resource_eb6dy")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1296387976]

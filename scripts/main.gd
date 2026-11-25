@@ -14,7 +14,6 @@ extends Node2D
 var difficulty: DifficultySettings
 var round_timer: Timer
 var enemy_spawn_timer: Timer
-var is_game_ended: bool = false
 
 func _ready() -> void:
 	GameState.calculate_bounds(ground)
@@ -42,6 +41,8 @@ func _ready() -> void:
 	
 	difficulty = GameState.get_difficulty()
 	_setup_timers()
+	# przeciwnik od poczatku
+	_on_enemy_spawn_timer_timeout()
 
 func _setup_timers() -> void:
 	round_timer = Timer.new()
@@ -59,19 +60,19 @@ func _setup_timers() -> void:
 		hud.update_timer(difficulty.round_duration)
 
 func _process(_delta: float) -> void:
-	if not is_game_ended and round_timer != null and hud != null:
+	if not GameState.is_game_ended and round_timer != null and hud != null:
 		hud.update_timer(round_timer.time_left)
 
 func _on_round_timer_timeout() -> void:
-	if is_game_ended:
+	if GameState.is_game_ended:
 		return
-	is_game_ended = true
+	GameState.is_game_ended = true
 	if hud != null:
 		hud.update_timer(0.0)
 	_show_end_screen(true)
 
 func _on_enemy_spawn_timer_timeout() -> void:
-	if is_game_ended or difficulty == null or difficulty.enemy_scene == null:
+	if GameState.is_game_ended or difficulty == null or difficulty.enemy_scene == null:
 		return
 	if get_tree().get_node_count_in_group(Constants.GROUP_ENEMIES) >= difficulty.max_enemies:
 		return
@@ -95,9 +96,9 @@ func _get_safe_spawn_position(margin: float, min_player_dist: float) -> Vector2:
 	return spawn_pos
 
 func _on_player_died() -> void:
-	if is_game_ended:
+	if GameState.is_game_ended:
 		return
-	is_game_ended = true
+	GameState.is_game_ended = true
 	_start_end_screen_timer(false, 0.8)
 
 func _start_end_screen_timer(is_victory: bool, delay: float) -> void:

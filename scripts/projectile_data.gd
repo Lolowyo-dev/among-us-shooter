@@ -4,7 +4,7 @@ extends Resource
 @export_group("Wygląd i Scena")
 @export var scene: PackedScene
 @export_range(0.1, 10.0, 0.1, "suffix:×") var scale: float = 1.0
-@export var scale_by_damage: bool = false
+@export var scale_by_damage: bool = true
 
 @export_group("Parametry strzału")
 @export_range(1, 1000, 1) var damage: int = 20

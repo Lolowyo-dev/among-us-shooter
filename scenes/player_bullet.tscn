@@ -9,7 +9,6 @@ size = Vector2(6, 4)
 [node name="PlayerBullet" type="Area2D" unique_id=354055164]
 script = ExtResource("1_46jqs")
 BASE_SPEED = 225.0
-BASE_DAMAGE = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2023177630]
 texture = ExtResource("2_46jqs")

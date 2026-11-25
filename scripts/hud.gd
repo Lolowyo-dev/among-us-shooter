@@ -1,9 +1,11 @@
 class_name HUD
 extends CanvasLayer
 
-@onready var score_label: Label = $MarginContainer/VBoxContainer/ScoreLabel
-@onready var health_label: Label = $MarginContainer/VBoxContainer/HealthLabel
-@onready var ammo_label: Label = $MarginContainer/VBoxContainer/AmmoLabel
+@onready var score_label: Label = %ScoreLabel
+@onready var health_label: Label = %HealthLabel
+@onready var health_bar: ProgressBar = %HealthBar
+@onready var ammo_label: Label = %AmmoLabel
+@onready var ammo_bar: ProgressBar = %AmmoBar
 
 func _ready() -> void:
 	GameState.score_changed.connect(update_score)
@@ -21,7 +23,11 @@ func update_score(val: int) -> void:
 	score_label.text = "Wynik: %d" % val
 
 func update_health(current: int, max_hp: int) -> void:
-	health_label.text = "Życie: %d / %d" % [current, max_hp]
+	health_label.text = "%d / %d" % [current, max_hp]
+	health_bar.max_value = max_hp
+	health_bar.value = current
 
 func update_ammo(current: int, max_ammo: int) -> void:
-	ammo_label.text = "Amunicja: %d / %d" % [current, max_ammo]
+	ammo_label.text = "%d / %d" % [current, max_ammo]
+	ammo_bar.max_value = max_ammo
+	ammo_bar.value = current

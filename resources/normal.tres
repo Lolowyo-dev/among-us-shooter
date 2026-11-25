@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DifficultySettings" format=3 uid="uid://dy65cl0ggjlqd"]
+
+[ext_resource type="PackedScene" uid="uid://dp2hrhv3sywmu" path="res://scenes/enemy.tscn" id="1_m4s32"]
+[ext_resource type="Script" uid="uid://c8r22c0cvvux0" path="res://scripts/difficulty_setting.gd" id="2_82ku0"]
+
+[resource]
+script = ExtResource("2_82ku0")
+enemy_scene = ExtResource("1_m4s32")
+metadata/_custom_type_script = "uid://c8r22c0cvvux0"

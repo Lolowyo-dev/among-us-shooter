@@ -27,6 +27,8 @@
 [sub_resource type="Resource" id="Resource_wp0k4"]
 script = ExtResource("4_6awcb")
 scene = ExtResource("3_c4w8v")
+scale = 1.5
+scale_by_damage = false
 metadata/_custom_type_script = "uid://bn6rqec46xyeh"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
@@ -177,7 +179,8 @@ z_index = 2
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_md0e3")
-detection_range = 100.0
+max_patrol_distance = 150.0
+detection_range = 200.0
 chase_speed = 60.0
 size_variation_percent = 10.0
 speed_variation_percent = 10.0

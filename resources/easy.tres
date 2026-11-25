@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DifficultySettings" format=3 uid="uid://xdr3bjyqajka"]
+
+[ext_resource type="PackedScene" uid="uid://dp2hrhv3sywmu" path="res://scenes/enemy.tscn" id="1_qlvrn"]
+[ext_resource type="Script" uid="uid://c8r22c0cvvux0" path="res://scripts/difficulty_setting.gd" id="2_acn5p"]
+
+[resource]
+script = ExtResource("2_acn5p")
+display_name = "Łatwy"
+enemy_scene = ExtResource("1_qlvrn")
+max_enemies = 4
+spawn_interval = 4.5
+health_multiplier = 0.7
+speed_multiplier = 0.7
+damage_multiplier = 0.7
+fire_rate_multiplier = 0.7
+metadata/_custom_type_script = "uid://c8r22c0cvvux0"

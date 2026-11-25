@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DifficultySettings" format=3 uid="uid://cn1w7wkidfpn4"]
+
+[ext_resource type="PackedScene" uid="uid://dp2hrhv3sywmu" path="res://scenes/enemy.tscn" id="1_6wuqf"]
+[ext_resource type="Script" uid="uid://c8r22c0cvvux0" path="res://scripts/difficulty_setting.gd" id="1_n2qed"]
+
+[resource]
+script = ExtResource("1_n2qed")
+display_name = "Trudny"
+enemy_scene = ExtResource("1_6wuqf")
+max_enemies = 10
+spawn_interval = 2.0
+health_multiplier = 1.4
+speed_multiplier = 1.4
+damage_multiplier = 1.4
+fire_rate_multiplier = 1.4
+metadata/_custom_type_script = "uid://c8r22c0cvvux0"

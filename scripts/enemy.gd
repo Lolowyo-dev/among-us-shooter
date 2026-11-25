@@ -24,13 +24,29 @@ extends Character
 var target: Node2D = null
 var is_chasing: bool = false
 
+var difficulty: DifficultySettings = null
+
 func _ready() -> void:
 	super._ready()
+	apply_difficulty()
 	apply_random_variations()
 	
 	if fire_timer != null:
 		fire_timer.wait_time = shoot_cooldown
 		fire_timer.start()
+
+func apply_difficulty() -> void:
+	if difficulty == null:
+		return
+	speed *= difficulty.speed_multiplier
+	chase_speed *= difficulty.speed_multiplier
+	max_health = maxi(1, roundi(max_health * difficulty.health_multiplier))
+	health = max_health
+	if difficulty.fire_rate_multiplier > 0.0:
+		shoot_cooldown = maxf(0.1, shoot_cooldown / difficulty.fire_rate_multiplier)
+	if projectile_data != null and difficulty.damage_multiplier != 1.0:
+		projectile_data = projectile_data.duplicate()
+		projectile_data.damage = maxi(1, roundi(projectile_data.damage * difficulty.damage_multiplier))
 
 func apply_random_variations() -> void:
 	# Wielkość (skala):

@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var health_bar: ProgressBar = %HealthBar
 @onready var ammo_label: Label = %AmmoLabel
 @onready var ammo_bar: ProgressBar = %AmmoBar
+@onready var timer_label: Label = %TimerLabel
 
 func _ready() -> void:
 	GameState.score_changed.connect(update_score)
@@ -31,3 +32,9 @@ func update_ammo(current: int, max_ammo: int) -> void:
 	ammo_label.text = "%d / %d" % [current, max_ammo]
 	ammo_bar.max_value = max_ammo
 	ammo_bar.value = current
+
+func update_timer(seconds_left: float) -> void:
+	var total_seconds: int = ceili(maxf(0.0, seconds_left))
+	var minutes: int = total_seconds / 60
+	var seconds: int = total_seconds % 60
+	timer_label.text = "%d:%02d" % [minutes, seconds]

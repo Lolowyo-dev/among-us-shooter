@@ -4,11 +4,19 @@ signal score_changed(new_score: int)
 
 const MAIN_SCENE_PATH: String = "res://scenes/main.tscn"
 const MENU_SCENE_PATH: String = "res://scenes/main_menu.tscn"
+const DEFAULT_DIFFICULTY_PATH: String = "res://resources/normal.tres"
 
 var score: int = 0:
 	set(value):
 		score = value
 		score_changed.emit(score)
+
+var current_difficulty: DifficultySettings = null
+
+func get_difficulty() -> DifficultySettings:
+	if current_difficulty == null:
+		current_difficulty = load(DEFAULT_DIFFICULTY_PATH) as DifficultySettings
+	return current_difficulty
 
 func add_score(points: int = 1) -> void:
 	score += points

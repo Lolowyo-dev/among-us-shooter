@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://dmy66mlosobmt"]
 
 [ext_resource type="Script" uid="uid://cgr0qy4jgdi3j" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Script" uid="uid://c8r22c0cvvux0" path="res://scripts/difficulty_setting.gd" id="2_8ln24"]
+[ext_resource type="Resource" uid="uid://xdr3bjyqajka" path="res://resources/easy.tres" id="3_rtw2f"]
+[ext_resource type="Resource" uid="uid://dy65cl0ggjlqd" path="res://resources/normal.tres" id="4_oa1go"]
+[ext_resource type="Resource" uid="uid://cn1w7wkidfpn4" path="res://resources/hard.tres" id="5_tbmy8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
 content_margin_left = 36.0
@@ -16,6 +20,9 @@ corner_radius_bottom_left = 12
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
 font_size = 36
 
+[sub_resource type="LabelSettings" id="LabelSettings_8ln24"]
+font_size = 14
+
 [node name="MainMenu" type="Control" unique_id=1308951433]
 layout_mode = 3
 anchors_preset = 15
@@ -24,6 +31,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_l6cm7")
+difficulties = Array[ExtResource("2_8ln24")]([ExtResource("3_rtw2f"), ExtResource("4_oa1go"), ExtResource("5_tbmy8")])
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1979460765]
 layout_mode = 1
@@ -60,6 +68,32 @@ horizontal_alignment = 1
 [node name="PlayButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1456971653]
 layout_mode = 2
 text = "Graj"
+
+[node name="DifficultyLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=260193887]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Wybierz Poziom Trudności:"
+
+[node name="DifficultySlider" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1534388330]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 3.0
+value = 1.0
+ticks_on_borders = true
+
+[node name="DifficultyValueLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/DifficultySlider" unique_id=1661738095]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 20.0
+offset_right = 49.0
+offset_bottom = 43.0
+text = "normal"
+label_settings = SubResource("LabelSettings_8ln24")
+
+[node name="Spacer" type="Control" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=91920028]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
 
 [node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=188494999]
 layout_mode = 2
